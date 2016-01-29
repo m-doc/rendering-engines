@@ -1,4 +1,4 @@
-package org.mdoc.rendering.engines
+package org.mdoc.renderingengines
 
 import java.nio.file.Path
 import org.mdoc.fshell.{ ProcessResult, Shell }
