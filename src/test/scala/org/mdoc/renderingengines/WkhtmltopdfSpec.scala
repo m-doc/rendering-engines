@@ -8,6 +8,16 @@ import org.scalacheck.Properties
 
 class WkhtmltopdfSpec extends Properties("Wkhtmltopdf") {
 
+  property("execWkhtmltoimage non-empty file") = secure {
+    val p = for {
+      tmpFile <- Shell.createTempFile("google", ".png")
+      _ <- execWkhtmltoimage("http://google.com", tmpFile)
+      bytes <- Shell.readAllBytes(tmpFile)
+      _ <- Shell.delete(tmpFile)
+    } yield bytes.size > 1024
+    p.yolo
+  }
+
   property("execWkhtmltopdf non-empty file") = secure {
     val p = for {
       tmpFile <- Shell.createTempFile("google", ".pdf")
