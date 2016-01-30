@@ -11,9 +11,15 @@ class WkhtmltopdfSpec extends Properties("Wkhtmltopdf") {
   property("execWkhtmltoimage non-empty file") = secure {
     val p = for {
       tmpFile <- Shell.createTempFile("google", ".png")
-      _ <- execWkhtmltoimage("http://google.com", tmpFile)
-      bytes <- Shell.readAllBytes(tmpFile)
-      _ <- Shell.delete(tmpFile)
+      res <- execWkhtmltoimage("http://google.com", tmpFile)
+      bytes <- {
+        println(res)
+        Shell.readAllBytes(tmpFile)
+      }
+      _ <- {
+        println(bytes)
+        Shell.delete(tmpFile)
+      }
     } yield bytes.size > 1024
     p.yolo
   }
