@@ -15,5 +15,5 @@ object Wkhtmltopdf {
     Shell.readProcess(
       "xvfb-run",
       List("--auto-servernum", "-s", "-screen 0 1280x1024x24") ++ args
-    )
+    ).map(res => if (res.status > 0) throw sys.error(res.toString) else res)
 }
