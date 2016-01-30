@@ -8,6 +8,7 @@ addons:
   apt:
     packages:
     - graphviz
+    - libreoffice-writer
     - wkhtmltopdf
     - xvfb
 cache:
