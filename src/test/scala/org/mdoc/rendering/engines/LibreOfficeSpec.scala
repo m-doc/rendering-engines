@@ -1,9 +1,9 @@
-package org.mdoc.renderingengines
+package org.mdoc.rendering.engines
 
 import java.nio.file.Paths
 import org.mdoc.fshell.Shell
 import org.mdoc.fshell.Shell.ShellSyntax
-import org.mdoc.renderingengines.LibreOffice._
+import LibreOffice._
 import org.scalacheck.Prop._
 import org.scalacheck.Properties
 

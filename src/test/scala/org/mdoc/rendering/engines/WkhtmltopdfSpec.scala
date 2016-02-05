@@ -1,8 +1,8 @@
-package org.mdoc.renderingengines
+package org.mdoc.rendering.engines
 
 import org.mdoc.fshell.Shell
 import org.mdoc.fshell.Shell.ShellSyntax
-import org.mdoc.renderingengines.Wkhtmltopdf._
+import Wkhtmltopdf._
 import org.scalacheck.Prop._
 import org.scalacheck.Properties
 
