@@ -12,7 +12,7 @@ object Wkhtmltopdf {
     for {
       pathIn <- Shell.writeToTempFile("mdoc-wkhtmltopdf-", ".html", bytes)
       pathOut = Paths.get(pathIn.toString + ".pdf")
-      _ <- execWkhtmltopdf(pathIn.toString, pathOut)
+      _ <- execWkhtmltopdf(pathIn.toString, pathOut).throwOnError
       bytesOut <- Shell.readAllBytes(pathOut)
       _ <- Shell.delete(pathIn)
       _ <- Shell.delete(pathOut)
@@ -26,6 +26,6 @@ object Wkhtmltopdf {
 
   private def execXvfbRun(args: List[String]): Shell[ProcessResult] = {
     val cmd = NonEmptyList("xvfb-run", "--auto-servernum", "-s", "-screen 0 1280x1024x24")
-    Shell.readProcess(cmd :::> args).throwOnError
+    Shell.readProcess(cmd :::> args)
   }
 }
