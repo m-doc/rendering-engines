@@ -6,7 +6,7 @@ import Wkhtmltopdf._
 import org.scalacheck.Prop._
 import org.scalacheck.Properties
 
-class WkhtmltopdfSpec extends Properties("Wkhtmltopdf") {
+object WkhtmltopdfSpec extends Properties("Wkhtmltopdf") {
 
   property("wkhtmltoimage non-empty file") = secure {
     val p = for {

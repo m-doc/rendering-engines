@@ -7,7 +7,7 @@ import LibreOffice._
 import org.scalacheck.Prop._
 import org.scalacheck.Properties
 
-class LibreOfficeSpec extends Properties("LibreOffice") {
+object LibreOfficeSpec extends Properties("LibreOffice") {
 
   property("convertToPdf") = secure {
     val odt = Paths.get("./src/test/resources/test.odt")
