@@ -17,7 +17,7 @@ object LibreOfficeSpec extends Properties("LibreOffice") {
       _ <- convertToPdf(odt)
       bytes <- Shell.readAllBytes(pdf)
       _ <- Shell.delete(pdf)
-    } yield notExists && bytes.size > 1024
+    } yield notExists && PdfUtils.isPdf(bytes)
     p.yolo
   }
 }

@@ -24,7 +24,7 @@ object WkhtmltopdfSpec extends Properties("Wkhtmltopdf") {
       _ <- wkhtmltopdf("http://google.com", tmpFile)
       bytes <- Shell.readAllBytes(tmpFile)
       _ <- Shell.delete(tmpFile)
-    } yield bytes.size > 1024
+    } yield PdfUtils.isPdf(bytes)
     p.yolo
   }
 }
