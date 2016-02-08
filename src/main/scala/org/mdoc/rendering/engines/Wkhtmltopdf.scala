@@ -1,22 +1,27 @@
 package org.mdoc.rendering.engines
 
-import java.nio.file.{ Path, Paths }
-import org.mdoc.fshell.{ ProcessResult, Shell }
+import java.nio.file.Path
+import org.mdoc.common.model.{ Document, Html, Pdf }
+import org.mdoc.fshell.ProcessResult
+import org.mdoc.fshell.Shell
 import org.mdoc.fshell.Shell.ShellSyntax
 import scalaz.NonEmptyList
 import scodec.bits.ByteVector
 
 object Wkhtmltopdf {
 
-  def htmlToPdf(bytes: ByteVector): Shell[ByteVector] =
+  def htmlToPdf(bytes: ByteVector): Shell[Document] = {
+    val formatOut = Pdf
+    val suffixIn = Utils.dotFormatExtension(Html)
     for {
-      pathIn <- Shell.writeToTempFile("mdoc-wkhtmltopdf-", ".html", bytes)
-      pathOut = Paths.get(pathIn.toString + ".pdf")
+      pathIn <- Shell.writeToTempFile("mdoc-wkhtmltopdf-", suffixIn, bytes)
+      pathOut = Utils.pathWithExtension(pathIn, formatOut)
       _ <- execWkhtmltopdf(pathIn.toString, pathOut).throwOnError
       bytesOut <- Shell.readAllBytes(pathOut)
       _ <- Shell.delete(pathIn)
       _ <- Shell.delete(pathOut)
-    } yield bytesOut
+    } yield Document(formatOut, bytesOut)
+  }
 
   def execWkhtmltoimage(url: String, output: Path): Shell[ProcessResult] =
     execXvfbRun(List("wkhtmltoimage", "--quiet", url, output.toString))
