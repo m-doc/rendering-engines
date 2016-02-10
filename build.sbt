@@ -3,7 +3,7 @@ enablePlugins(MdocPlugin)
 name := "rendering-engines"
 
 libraryDependencies ++= Seq(
-  Library.commonModel,
-  Library.fshell,
+  MdocLibrary.commonModel,
+  MdocLibrary.fshell,
   Library.scalacheck % "test"
 )

@@ -1,7 +1,9 @@
 package org.mdoc.rendering.engines
 
 import java.nio.file.{ Path, Paths }
-import org.mdoc.common.model._
+import org.mdoc.common.model.Document
+import org.mdoc.common.model.Format
+import org.mdoc.common.model.Format._
 import scodec.bits.ByteVector
 
 object Utils {

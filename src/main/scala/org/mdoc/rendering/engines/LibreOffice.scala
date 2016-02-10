@@ -18,16 +18,20 @@ object LibreOffice {
       _ <- Shell.write(pathIn, doc.body)
       _ <- execLowriter(pathIn, dir, outputFormat).throwOnError
       bytesOut <- Shell.readAllBytes(pathOut)
-      _ <- Shell.delete(pathIn)
-      _ <- Shell.delete(pathOut)
-      _ <- Shell.delete(dir)
+      _ <- Shell.deleteAll(List(pathIn, pathOut, dir))
     } yield Document(outputFormat, bytesOut)
   }
 
-  def execLowriter(input: Path, outdir: Path, outputFormat: Format): Shell[ProcessResult] = {
-    val cmd = NonEmptyList("lowriter", "--headless",
-      "--convert-to", Utils.formatExtension(outputFormat),
-      "--outdir", outdir.toString, input.toString)
-    Shell.readProcess(cmd)
+  def execLowriter(input: Path, outputDir: Path, outputFormat: Format): Shell[ProcessResult] = {
+    val cmd = NonEmptyList(
+      "lowriter",
+      "--headless",
+      "--convert-to",
+      Utils.formatExtension(outputFormat),
+      "--outdir",
+      outputDir.toString,
+      input.toString
+    )
+    Shell.readProcessIn(cmd, outputDir)
   }
 }

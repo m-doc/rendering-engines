@@ -1,7 +1,8 @@
 package org.mdoc.rendering.engines
 
 import java.nio.file.Path
-import org.mdoc.common.model.{ Document, Html, Pdf }
+import org.mdoc.common.model.Document
+import org.mdoc.common.model.Format.{ Html, Pdf }
 import org.mdoc.fshell.ProcessResult
 import org.mdoc.fshell.Shell
 import org.mdoc.fshell.Shell.ShellSyntax

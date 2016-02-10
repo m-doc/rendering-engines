@@ -1,7 +1,8 @@
 package org.mdoc.rendering.engines
 
 import java.nio.file.Paths
-import org.mdoc.common.model.{ Document, Odt, Pdf }
+import org.mdoc.common.model.Format.{ Pdf, Odt }
+import org.mdoc.common.model.Document
 import org.mdoc.fshell.Shell
 import org.mdoc.fshell.Shell.ShellSyntax
 import org.mdoc.rendering.engines.LibreOffice._
