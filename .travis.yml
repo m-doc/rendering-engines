@@ -1,15 +1,9 @@
-notifications:
-  webhooks:
-    urls:
-    - https://webhooks.gitter.im/e/13627e9a6e8fa0dec084 # m-doc/general
-    on_success: change
-    on_failure: always
-    on_start: never
 language: scala
 scala:
 - 2.11.7
 jdk:
 - oraclejdk8
+
 sudo: false
 addons:
   apt:
@@ -18,18 +12,28 @@ addons:
     - libreoffice-writer
     - wkhtmltopdf
     - xvfb
+
 cache:
   directories:
   - "$HOME/.ivy2/cache"
   - "$HOME/.sbt/boot/"
+
 script:
 - sbt ++$TRAVIS_SCALA_VERSION validate
 after_success:
 - bash <(curl -s https://codecov.io/bash)
 - |
   [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ] &&
-  sbt ++$TRAVIS_SCALA_VERSION makeBintrayCredentials reload clean publish
+  sbt ++$TRAVIS_SCALA_VERSION mdocPublishJar
 env:
   global:
   - secure: sD2Np9vseqxVi29L27vHPtKyoCeP25x9MCRXTHR7DdiGucCtGtWbLwCeiv+XfkngscUasTgjIeOflrWUZ864ok+TUGpqP2pwUXPc/NGXegqMZ7+qkTEIYQ+f7UrNG1V0e3BRJZsN0pzrR8LDn7D+P8HY0q/xV2popzM820JQysygOVP4aV6CcsWsjufVPVZ5E7UDIbv2ola3UuOTcmNKYxCHwjHOYu2dccb1KFhvoCmvjdw//g2q7wDu/JQgmkMWXrbzaNS0UA48dYvtZFyzNJ2Gg8kqbetnaEgacVwt3WCWekgtoKJGpFFzrpu92kjR4FcFYP1ECxYJRYSk9daaGZm75pUqFO6JdTRNaFaSt/a7GCR/DaLAb75Es76M1smJPabb7yZNUg+ByG6Bmpu168RnQmU5gIQn/qpU3wWgJwfTya5EMnBGhtHCdyWUgqxvaw70GmRCaR4DfoDRKdJVThaIHvmLbIWtff6iuYIHj3U7mgT8yXAF6RNDXPPk+Zxql4ZypEkYdqy/b7Td6bNpTeuwcrvtRvEik9PvuS/wgDpxHyyNem8KFHEhYUf5TpDFPqyyud/GIrd5ZRAAihSP55FcPikmhmQvY/vvgeDi84wSE7/zO4KvNAmAsiwecZqnmh621Xb/iXy9SCkqMiMIo4tZkhFGKXW+v0I14LOCAzI=
   - secure: FrW59N2qubjv9FOjda/7JOv5GaN6yRXWxAKbBBQyy1OIDoyiq3SR3lURv7rVR3D0c8MBQom8TYrdVyhfWnod5KVkJ3aM1SWqVBIES9s5JtCODctlPsST+RBEyPol71l6oQpAQ75V1RvPvgXKzbdE0AxDtcci479/T+KHTmzKyR8e0JiwQU23tdocnALSxHxslsRr44HxCdUBnOS73j8lLWPZAlrv6SV6v7WCGwzLUN4+zvcdMM4AABJLNV+mEecs8tKvW6bt6OMLWu4ebZUJnSS6lQArfp4dGUQxn8Viz8Vuza14e4oGCBMtoaM5h55yD9qBjB82L5PGvYOV1snjZxB0i/jWxMPUilY173tT8C3IQXKG+r0lLUjWVcYuOcat8+RdEvAiXymnT+oJoNcwFhdByICGWRFvqE5Xo9v6tkKbcmu0I9jJFFiMJyIgugC6btqcptR3kPi1b0xMdw7XsrDDa9JYbBghQGPBmpgudbBKl95PQb1FeKYrZAbHrjvFnAeyPPbKrmSldlbXfSuBDOPntMqE9kSQTQ1uFDH7+xPRykPNCywPMCegVfzH9vcqEyv6/zrpZg5j/2DjrsfQvBRuNu6Yc/4JPGCA5mETX6fYoILYncuzzXdlmweBwSS8bMLuhyrAquLeaWonaOVmMDr4QuhVAUNPsQLvIfHn06U=
+
+notifications:
+  webhooks:
+    urls:
+    - https://webhooks.gitter.im/e/13627e9a6e8fa0dec084 # m-doc/general
+    on_success: change
+    on_failure: always
+    on_start: never
