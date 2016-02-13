@@ -26,10 +26,8 @@ object LibreOffice {
     val cmd = NonEmptyList(
       "lowriter",
       "--headless",
-      "--convert-to",
-      Utils.formatExtension(outputFormat),
-      "--outdir",
-      outputDir.toString,
+      "--convert-to", outputFormat.toExtension,
+      "--outdir", outputDir.toString,
       input.toString
     )
     Shell.readProcessIn(cmd, outputDir)

@@ -9,18 +9,7 @@ import scodec.bits.ByteVector
 object Utils {
 
   def dotFormatExtension(format: Format): String =
-    "." + formatExtension(format)
-
-  def formatExtension(format: Format): String =
-    format match {
-      case Docx => "docx"
-      case Html => "html"
-      case Jpeg => "jpg"
-      case Latex => "tex"
-      case Odt => "odt"
-      case Pdf => "pdf"
-      case Png => "png"
-    }
+    "." + format.toExtension
 
   def pathWithExtension(path: Path, format: Format): Path =
     Paths.get(path.toString + dotFormatExtension(format))
