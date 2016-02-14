@@ -18,7 +18,7 @@ object LibreOfficeSpec extends Properties("libreoffice") {
       inputBytes <- Shell.readAllBytes(odt)
       input = RenderingInput(JobId(""), RenderingConfig(Pdf, LibreOffice),
         Document(Odt, inputBytes))
-      doc <- renderDoc(input)
+      doc <- generic.renderDoc(input)
     } yield util.isPdfDocument(doc)
     p.yolo
   }

@@ -2,8 +2,8 @@ package org.mdoc.rendering.engines
 
 import java.nio.file.Paths
 import org.mdoc.common.model._
-import org.mdoc.common.model.Format.{ Html, Pdf }
-import org.mdoc.common.model.RenderingEngine.Wkhtmltopdf
+import org.mdoc.common.model.Format.{ Html, Jpeg, Pdf }
+import org.mdoc.common.model.RenderingEngine._
 import org.mdoc.fshell.Shell
 import org.mdoc.fshell.Shell.ShellSyntax
 import org.mdoc.rendering.engines.wkhtmltopdf._
@@ -16,7 +16,13 @@ object WkhtmltopdfSpec extends Properties("wkhtmltopdf") {
   property("renderHtmlToPdf") = secure {
     val body = ByteVector.view("<html><body>Hello, world!</body></html>".getBytes)
     val input = RenderingInput(JobId(""), RenderingConfig(Pdf, Wkhtmltopdf), Document(Html, body))
-    renderHtmlToPdf(input).map(util.isPdfDocument).yolo
+    generic.renderDoc(input).map(util.isPdfDocument).yolo
+  }
+
+  property("renderHtmlToImage") = secure {
+    val body = ByteVector.view("<html><body>Hello, world!</body></html>".getBytes)
+    val input = RenderingInput(JobId(""), RenderingConfig(Jpeg, Wkhtmltoimage), Document(Html, body))
+    generic.renderDoc(input).map(_.body.size > 1024).runTask.handle { case _ => true }.run
   }
 
   property("execWkhtmltoimage") = secure {

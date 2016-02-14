@@ -10,12 +10,12 @@ import scalaz.NonEmptyList
 object wkhtmltopdf {
 
   val renderHtmlToPdf: RenderingInput => Shell[Document] =
-    generic.mkRenderDoc { ctx =>
+    generic.mkRenderFun { ctx =>
       execWkhtmltopdf(ctx.inputFile.toString, ctx.outputFile, ctx.workingDir).throwOnError
     }
 
   val renderHtmlToImage: RenderingInput => Shell[Document] =
-    generic.mkRenderDoc { ctx =>
+    generic.mkRenderFun { ctx =>
       execWkhtmltoimage(ctx.inputFile.toString, ctx.outputFile, ctx.workingDir).throwOnError
     }
 

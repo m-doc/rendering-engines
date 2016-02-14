@@ -10,7 +10,7 @@ import scalaz.NonEmptyList
 object libreoffice {
 
   val renderDoc: RenderingInput => Shell[Document] =
-    generic.mkRenderDoc { ctx =>
+    generic.mkRenderFun { ctx =>
       execLowriter(ctx.inputFile, ctx.workingDir, ctx.input.config.outputFormat).throwOnError
     }
 

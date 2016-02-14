@@ -16,7 +16,7 @@ object generic {
     }
   }
 
-  def mkRenderDoc[T](execEngine: RenderingContext => Shell[T]): RenderingInput => Shell[Document] =
+  def mkRenderFun[T](execEngine: RenderingContext => Shell[T]): RenderingInput => Shell[Document] =
     input => {
       val engineName = input.config.engine.toString.toLowerCase
       val jobId = input.id.self
