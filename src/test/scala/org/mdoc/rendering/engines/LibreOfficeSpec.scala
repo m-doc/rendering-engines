@@ -1,22 +1,25 @@
 package org.mdoc.rendering.engines
 
 import java.nio.file.Paths
-import org.mdoc.common.model.Document
+import org.mdoc.common.model._
 import org.mdoc.common.model.Format.{ Odt, Pdf }
+import org.mdoc.common.model.RenderingEngine.LibreOffice
 import org.mdoc.fshell.Shell
 import org.mdoc.fshell.Shell.ShellSyntax
-import org.mdoc.rendering.engines.LibreOffice._
+import org.mdoc.rendering.engines.libreoffice._
 import org.scalacheck.Prop._
 import org.scalacheck.Properties
 
-object LibreOfficeSpec extends Properties("LibreOffice") {
+object LibreOfficeSpec extends Properties("libreoffice") {
 
-  property("convertTo PDF") = secure {
+  property("renderDoc") = secure {
     val odt = Paths.get("./src/test/resources/test.odt")
     val p = for {
-      bytesIn <- Shell.readAllBytes(odt)
-      docOut <- convertTo(Document(Odt, bytesIn), Pdf)
-    } yield util.isPdfDocument(docOut)
+      inputBytes <- Shell.readAllBytes(odt)
+      input = RenderingInput(JobId(""), RenderingConfig(Pdf, LibreOffice),
+        Document(Odt, inputBytes))
+      doc <- renderDoc(input)
+    } yield util.isPdfDocument(doc)
     p.yolo
   }
 
