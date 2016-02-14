@@ -11,7 +11,7 @@ object WkhtmltopdfSpec extends Properties("Wkhtmltopdf") {
 
   property("htmlToPdf") = secure {
     val html = ByteVector.view("<html><body>Hello, world!</body></html>".getBytes)
-    htmlToPdf(html).map(Utils.isPdfDocument).yolo
+    htmlToPdf(html).map(util.isPdfDocument).yolo
   }
 
   property("wkhtmltoimage non-empty file") = secure {
@@ -30,7 +30,7 @@ object WkhtmltopdfSpec extends Properties("Wkhtmltopdf") {
       _ <- execWkhtmltopdf("http://google.com", tmpFile)
       bytes <- Shell.readAllBytes(tmpFile)
       _ <- Shell.delete(tmpFile)
-    } yield Utils.isPdfByteVector(bytes)
+    } yield util.isPdfByteVector(bytes)
     p.yolo
   }
 }

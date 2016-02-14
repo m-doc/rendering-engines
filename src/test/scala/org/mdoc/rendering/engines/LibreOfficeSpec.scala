@@ -16,7 +16,7 @@ object LibreOfficeSpec extends Properties("LibreOffice") {
     val p = for {
       bytesIn <- Shell.readAllBytes(odt)
       docOut <- convertTo(Document(Odt, bytesIn), Pdf)
-    } yield Utils.isPdfDocument(docOut)
+    } yield util.isPdfDocument(docOut)
     p.yolo
   }
 
@@ -28,7 +28,7 @@ object LibreOfficeSpec extends Properties("LibreOffice") {
       _ <- execLowriter(odt, Paths.get("."), Pdf)
       bytes <- Shell.readAllBytes(pdf)
       _ <- Shell.delete(pdf)
-    } yield notExists && Utils.isPdfByteVector(bytes)
+    } yield notExists && util.isPdfByteVector(bytes)
     p.yolo
   }
 }
