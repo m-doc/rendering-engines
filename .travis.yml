@@ -8,7 +8,6 @@ sudo: false
 addons:
   apt:
     packages:
-    - graphviz
     - libreoffice-writer
     - wkhtmltopdf
     - xvfb
@@ -19,7 +18,7 @@ cache:
   - "$HOME/.sbt/boot/"
 
 script:
-- sbt ++$TRAVIS_SCALA_VERSION validate
+- sbt ++$TRAVIS_SCALA_VERSION mdocValidate
 after_success:
 - bash <(curl -s https://codecov.io/bash)
 - |
