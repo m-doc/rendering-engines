@@ -8,6 +8,7 @@ sudo: false
 addons:
   apt:
     packages:
+    - pandoc
     - libreoffice-writer
     - wkhtmltopdf
     - xvfb

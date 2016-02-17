@@ -12,6 +12,7 @@ object generic {
   def renderDoc(input: RenderingInput): Shell[Document] = {
     input.config.engine match {
       case LibreOffice => libreoffice.renderDoc(input)
+      case Pandoc => pandoc.renderDoc(input)
       case Wkhtmltoimage | Wkhtmltopdf => wkhtmltopdf.renderDoc(input)
     }
   }
