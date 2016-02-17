@@ -25,6 +25,10 @@ object WkhtmltopdfSpec extends Properties("wkhtmltopdf") {
     generic.renderDoc(input).map(_.body.size > 1024).runTask.handle { case _ => true }.run
   }
 
+  property("renderUrlToPdf") = secure {
+    renderUrlToPdf("http://google.com").map(util.isPdfDocument).yolo
+  }
+
   property("execWkhtmltoimage") = secure {
     val p = for {
       tmpFile <- Shell.createTempFile("google", ".png")

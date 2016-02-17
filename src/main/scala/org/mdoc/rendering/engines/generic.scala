@@ -1,6 +1,7 @@
 package org.mdoc.rendering.engines
 
 import org.mdoc.common.model.Document
+import org.mdoc.common.model.RenderingEngine
 import org.mdoc.common.model.RenderingEngine._
 import org.mdoc.common.model.RenderingInput
 import org.mdoc.fshell.Shell
@@ -18,9 +19,8 @@ object generic {
 
   def mkRenderFun(execEngine: RenderingContext => Shell[_]): RenderingInput => Shell[Document] =
     input => {
-      val engineName = input.config.engine.toString.toLowerCase
       val jobId = input.id.self
-      val dirPrefix = s"mdoc-$engineName-$jobId-"
+      val dirPrefix = s"${tempPrefix(input.config.engine)}$jobId-"
       val inputFormat = input.doc.format
       val outputFormat = input.config.outputFormat
 
@@ -36,4 +36,9 @@ object generic {
         _ <- Shell.deleteAll(List(inputFile, outputFile, workingDir))
       } yield Document(outputFormat, outputBytes)
     }
+
+  def tempPrefix(engine: RenderingEngine): String = {
+    val engineName = engine.toString.toLowerCase
+    s"mdoc-$engineName-"
+  }
 }
