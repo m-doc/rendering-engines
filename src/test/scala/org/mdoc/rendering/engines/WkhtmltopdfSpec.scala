@@ -13,36 +13,36 @@ import scodec.bits.ByteVector
 
 object WkhtmltopdfSpec extends Properties("wkhtmltopdf") {
 
-  property("renderHtmlToPdf") = secure {
+  property("renderDoc Pdf") = secure {
     val body = ByteVector.view("<html><body>Hello, world!</body></html>".getBytes)
     val input = RenderingInput(JobId(""), RenderingConfig(Pdf, Wkhtmltopdf), Document(Html, body))
     generic.renderDoc(input).map(util.isPdfDocument).yolo
   }
 
-  property("renderHtmlToImage") = secure {
+  property("renderDoc Jpeg") = secure {
     val body = ByteVector.view("<html><body>Hello, world!</body></html>".getBytes)
     val input = RenderingInput(JobId(""), RenderingConfig(Jpeg, Wkhtmltoimage), Document(Html, body))
     generic.renderDoc(input).map(_.body.size > 1024).runTask.handle { case _ => true }.run
   }
 
-  property("renderUrlToPdf") = secure {
-    renderUrlToPdf("http://google.com").map(util.isPdfDocument).yolo
+  property("renderUrl") = secure {
+    renderUrl("http://google.com", Pdf).map(util.isPdfDocument).yolo
   }
 
-  property("execWkhtmltoimage") = secure {
+  property("execWkhtmltoX Png") = secure {
     val p = for {
       tmpFile <- Shell.createTempFile("google", ".png")
-      res <- execWkhtmltoimage("http://google.com", tmpFile, Paths.get("."))
+      res <- execWkhtmltoX(Wkhtmltoimage, "http://google.com", tmpFile, Paths.get("."))
       bytes <- Shell.readAllBytes(tmpFile)
       _ <- Shell.delete(tmpFile)
     } yield res.status > 0 || bytes.size > 1024 // wkhtmltoimage is not available on Travis
     p.yolo
   }
 
-  property("execWkhtmltopdf") = secure {
+  property("execWkhtmltoX Pdf") = secure {
     val p = for {
       tmpFile <- Shell.createTempFile("google", ".pdf")
-      _ <- execWkhtmltopdf("http://google.com", tmpFile, Paths.get("."))
+      _ <- execWkhtmltoX(Wkhtmltopdf, "http://google.com", tmpFile, Paths.get("."))
       bytes <- Shell.readAllBytes(tmpFile)
       _ <- Shell.delete(tmpFile)
     } yield util.isPdfByteVector(bytes)
