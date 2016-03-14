@@ -21,19 +21,20 @@ object generic {
     input => {
       val jobId = input.id.self
       val dirPrefix = s"${tempPrefix(input.config.engine)}$jobId-"
+      val baseName = s"doc-$jobId"
       val inputFormat = input.doc.format
       val outputFormat = input.config.outputFormat
 
       for {
         workingDir <- Shell.createTempDirectory(dirPrefix)
-        basePath = workingDir.resolve("doc-" + jobId)
-        inputFile = PathOps.withExtension(basePath, inputFormat)
-        outputFile = PathOps.withExtension(basePath, outputFormat)
+        inputDir <- Shell.createDirectory(workingDir.resolve("input"))
+        inputFile = PathOps.withExtension(inputDir.resolve(baseName), inputFormat)
+        outputFile = PathOps.withExtension(workingDir.resolve(baseName), outputFormat)
         ctx = RenderingContext(input, workingDir, inputFile, outputFile)
         _ <- Shell.write(inputFile, input.doc.body)
         _ <- execEngine(ctx)
         outputBytes <- Shell.readAllBytes(outputFile)
-        _ <- Shell.deleteAll(List(inputFile, outputFile, workingDir))
+        _ <- Shell.deleteAll(List(inputFile, inputDir, outputFile, workingDir))
       } yield Document(outputFormat, outputBytes)
     }
 

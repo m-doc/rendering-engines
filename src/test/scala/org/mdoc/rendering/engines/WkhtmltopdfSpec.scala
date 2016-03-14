@@ -13,13 +13,13 @@ import scodec.bits.ByteVector
 
 object WkhtmltopdfSpec extends Properties("wkhtmltopdf") {
 
-  property("renderDoc Pdf") = secure {
+  property("renderDoc: Html -> Pdf") = secure {
     val body = ByteVector.view("<html><body>Hello, world!</body></html>".getBytes)
     val input = RenderingInput(JobId(""), RenderingConfig(Pdf, Wkhtmltopdf), Document(Html, body))
     generic.renderDoc(input).map(util.isPdfDocument).yolo
   }
 
-  property("renderDoc Jpeg") = secure {
+  property("renderDoc: Html -> Jpeg") = secure {
     val body = ByteVector.view("<html><body>Hello, world!</body></html>".getBytes)
     val input = RenderingInput(JobId(""), RenderingConfig(Jpeg, Wkhtmltoimage), Document(Html, body))
     generic.renderDoc(input).map(_.body.size > 1024).runTask.handle { case _ => true }.run
@@ -29,7 +29,7 @@ object WkhtmltopdfSpec extends Properties("wkhtmltopdf") {
     renderUrl("http://google.com", Pdf).map(util.isPdfDocument).yolo
   }
 
-  property("execWkhtmltoX Png") = secure {
+  property("execWkhtmltoX: Png") = secure {
     val p = for {
       tmpFile <- Shell.createTempFile("google", ".png")
       res <- execWkhtmltoX(Wkhtmltoimage, "http://google.com", tmpFile, Paths.get("."))
@@ -39,7 +39,7 @@ object WkhtmltopdfSpec extends Properties("wkhtmltopdf") {
     p.yolo
   }
 
-  property("execWkhtmltoX Pdf") = secure {
+  property("execWkhtmltoX: Pdf") = secure {
     val p = for {
       tmpFile <- Shell.createTempFile("google", ".pdf")
       _ <- execWkhtmltoX(Wkhtmltopdf, "http://google.com", tmpFile, Paths.get("."))
